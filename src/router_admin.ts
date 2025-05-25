@@ -31,7 +31,6 @@ routerAdmin.get("/logout", storeController.LogOut)
 routerAdmin.get("/furniture/all", 
     storeController.verifyRestaurant,
     furnitureController.getAllFurnitures);
-    console.log("Upload imade:",uploadFurnitureImages)
 
 routerAdmin.post("/furniture/create",
     storeController.verifyRestaurant,
@@ -40,7 +39,6 @@ routerAdmin.post("/furniture/create",
 routerAdmin.post("/furniture/:id", 
     storeController.verifyRestaurant,
     furnitureController.updateChosenProduct);  
-    console.log("Upload imade:",uploadFurnitureImages)
 
 
 routerAdmin.get("/user/all",

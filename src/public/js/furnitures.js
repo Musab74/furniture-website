@@ -2,51 +2,58 @@ console.log("Furnitures frontend javascript file");
 
 
 $(function () {
+    // Show/hide furniture capacity based on furniture collection
     $(".furniture-collection").on("change", () => {
         const selectedValue = $(".furniture-collection").val();
-        if (selectedValue === "DRINK") {
-            $("#furniture-collection").hide();
-            $("#furniture-capacity").show();
+        console.log("Selected furniture collection:", selectedValue);
+
+        if (selectedValue === "BEDROOM" ) {
+            $(".furniture-volume").parent().show(); 
+            $(".furniture-size").parent().hide(); 
+            // Show capacity select container
         } else {
-            $("#furniture-volume").hide();
-            $("#furniture-collection").show();
+            $(".furniture-volume").parent().hide();
+            $(".furniture-size").parent().show(); 
+            // Hide capacity select container
         }
     });
 
-$("#process-btn").on("click", () => {
-    $(".dish-container").slideToggle(500);
-    $("#process-btn").css("display", "none")
-});
+    // Trigger change event on page load to initialize correct visibility
+    $(".furniture-collection").trigger("change");
 
-$("#cancel-btn").on("click", () => {
-    $(".dish-container").slideToggle(100);
-    $("#process-btn").css("display", "flex")
-});
+    // Show new furniture form on process button click
+    $("#process-btn").on("click", () => {
+        $(".dish-container").slideToggle(500);
+        $("#process-btn").css("display", "none");
+    });
 
-$(".new-furniture-status").on("change", async function(e) {
-    const id = e.target.id;
-    const furnitureStatus = $(`#${id}.new-furniture-status`).val();
+    // Hide new furniture form on cancel button click
+    $("#cancel-btn").on("click", () => {
+        $(".dish-container").slideToggle(100);
+        $("#process-btn").css("display", "flex");
+    });
 
-    try {
-        const response = await axios.post(`/admin/furniture/${id}`, {furnitureStatus: furnitureStatus});
+    // Handle status change for furniture via AJAX
+    $(".new-furniture-status").on("change", async function (e) {
+        const id = e.target.id;
+        const furnitureStatus = $(`#${id}.new-furniture-status`).val();
 
-        const result = response.data;
-        if(result.data) {
-            console.log("furniture updated!");
-            $(".new-furniture-status").blur();
-            
-        }else {
-            alert ("furniture update failed");
+        try {
+            const response = await axios.post(`/admin/furniture/${id}`, { furnitureStatus: furnitureStatus });
+            const result = response.data;
+            if (result.data) {
+                console.log("furniture updated!");
+                $(".new-furniture-status").blur();
+            } else {
+                alert("furniture update failed");
+            }
+        } catch (err) {
+            console.log(err);
+            alert("furniture update failed");
         }
-    } catch (err) {
-        console.log( err );
-        alert("furniture update failed");
-        
-    }
-
-})
-
+    });
 });
+;
 
 
 function validateForm() {
@@ -74,14 +81,14 @@ function validateForm() {
 
 function previewFileHandler(input, order) {
     const imgClassName = input.className;
-   
+
 
     const file = $(`.${imgClassName}`).get(0).files[0]; //gives detail infos about the file 
     console.log("file:", file);
-    
+
     const fileType = file["type"];
-   
-    
+
+
     const validImageType = ["image/jpg", "image/jpeg", "image/png"]; //mime type
 
     if (!validImageType.includes(fileType)) {
@@ -89,15 +96,15 @@ function previewFileHandler(input, order) {
     } else {
         if (file) {
             let reader = new FileReader();
-          
-            
+
+
             reader.onload = function () {
                 $(`#image-section-${order}`).attr("src", reader.result)
-            
-                
+
+
             }
             reader.readAsDataURL(file);
-           
+
         }
     }
 

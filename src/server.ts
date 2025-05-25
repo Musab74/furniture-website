@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import app from "./app"
-console.log("MONGO_URL:", process.env.MONGO_URL);
 
 //cluster => Database => collection => Document
 

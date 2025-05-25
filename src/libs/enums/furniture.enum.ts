@@ -3,14 +3,13 @@ export enum FurnitureSize {
     SMALL = "SMALL",
     MEDIUM = "MEDIUM",
     LARGE = "LARGE",
-    SET = "SET",
+    KIDS="KIDS"
 }
 
 // Furniture dimensions or volume capacity (optional - could be for storage, shelving, etc.)
 export enum FurnitureCapacity {
     SINGLE = "SINGLE",
     DOUBLE = "DOUBLE",
-    TRIPLE = "TRIPLE",
     FAMILY = "FAMILY",
 }
 
@@ -29,6 +28,4 @@ export enum FurnitureCollection {
     DINING_ROOM = "DINING_ROOM",
     OFFICE = "OFFICE",
     OUTDOOR = "OUTDOOR",
-    STORAGE = "STORAGE",
-    DECOR = "DECOR",
 }
