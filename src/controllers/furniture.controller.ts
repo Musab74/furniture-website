@@ -7,14 +7,14 @@ import { AdminRequest } from "../libs/types/member";
 
 const furnitureService = new FurnitureService();
 
-const productContoller: T = {};
+const furnitureController: T = {};
 
-productContoller.getAllProducts = async (req: Request, res: Response) => {
+furnitureController.getAllFurnitures = async (req: Request, res: Response) => {
     try {
         console.log("Body:", req.body);
-      const data = await furnitureService.getAllProducts();
+      const data = await furnitureService.getAllFurnitures();
       console.log("data:", data);
-      res.render("products", {products: data});
+      res.render("furnitures", {furnitures: data});
       
     } catch (err) {
         console.log("Error getAllProducts", err);
@@ -26,7 +26,7 @@ productContoller.getAllProducts = async (req: Request, res: Response) => {
 
 
 // SSR
-productContoller.createNewProduct = async (req: AdminRequest, res: Response) => {
+furnitureController.createNewProduct = async (req: AdminRequest, res: Response) => {
     try {
         console.log("Body:");
         console.log("req.files:", req.files);
@@ -40,7 +40,7 @@ productContoller.createNewProduct = async (req: AdminRequest, res: Response) => 
 
         await furnitureService.createNewProduct(data);
 
-        res.send(`<script> alert ("Succesfully created"); window.location.replace('/admin/product/all') </script>`
+        res.send(`<script> alert ("Succesfully created"); window.location.replace('/admin/furniture/all') </script>`
         );
 
         console.log("data", data);
@@ -49,11 +49,11 @@ productContoller.createNewProduct = async (req: AdminRequest, res: Response) => 
         const message = 
         err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
         res.send(
-            `<script> alert ("${message}"); window.location.replace('/admin/product/all') </script>`
+            `<script> alert ("${message}"); window.location.replace('/admin/furniture/all') </script>`
         )}
 };
 
-productContoller.updateChosenProduct = async (req: Request, res: Response) => {
+furnitureController.updateChosenProduct = async (req: Request, res: Response) => {
     try {
         console.log("Body:", req.body);
         const id = req.params.id;
@@ -69,4 +69,4 @@ productContoller.updateChosenProduct = async (req: Request, res: Response) => {
     }
 };
 
-export default productContoller;
+export default furnitureController;

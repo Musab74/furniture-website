@@ -1,191 +1,134 @@
+/* Background video */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Centered container */
 .signup-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  animation: gradient 15s ease infinite;
-  -webkit-animation: gradient 15s ease infinite;
-  background-size: 200% 200%;
-}
-
-.signup-container a {
-  text-decoration: none;
-  color: black;
-}
-
-.signup-container .signup-frame {
-  position: relative;
-  width: 420px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background: #ffffff;
-  padding: 25px;
-}
-
-.signup-container .signup-frame .sign-input-frame {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-}
-
-.signup-container .sign-input-frame .sign-up-frame {
-  position: relative;
-  margin-top: 15px;
-  width: 49%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.signup-container .sign-up-frame label {
-  margin-bottom: 0px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 18px;
-}
-
-.signup-container .sign-up-frame input {
-  position: relative;
-  margin-top: 10px;
-  padding-left: 20px;
-  width: 100%;
-  height: 55px;
-  background: #f6f5f5;
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-}
-
-.signup-container .media-frame {
-  position: relative;
-  margin-top: 15px;
-  width: 100%;
-  height: 250px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.signup-container .media-frame .upload-img-frame {
-  position: relative;
-  width: 275px;
-  height: 93%;
-  display: flex;
-  border-radius: 15px;
-}
-
-.signup-container .upload-img-frame .delete-img {
-  position: absolute;
-  width: 37px;
-  height: 37px;
-  right: 5%;
-  top: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
-  box-shadow: 0px 6px 15px rgba(64, 79, 104, 0.05);
-  border-radius: 8px;
-}
-
-.signup-container .media-frame .upload-container {
-  position: relative;
-  margin-left: 30px;
-  width: 75%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.signup-container .media-text {
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 18px;
-  color: #140342;
-}
-
-.signup-container .file-box input[type="file"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
-.signup-container .file-box label {
-  margin-bottom: 0px;
-  width: 138px;
-  height: 55px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #6a7a99;
-  border-radius: 0px 8px 8px 0px;
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 26px;
-  color: #ffffff;
-}
-
-.signup-container .file-box .upload-name {
-  position: relative;
+  min-height: 100vh;
   padding: 20px;
-  width: 85%;
-  height: 55px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Signup card */
+.signup-frame {
+  width: 100%;
+  max-width: 650px;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(244, 241, 241, 0.2);
+}
+
+/* Top section */
+.signup-top h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+/* Form layout */
+.sign-input-frame {
   display: flex;
-  background: #ffffff;
-  border: 1px solid #dddddd;
-  border-radius: 8px 0px 0px 8px;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
-.signup-container .thumbnail-desc {
+.sign-up-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-up-frame label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.sign-up-frame input {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Media section */
+.media-frame {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.upload-img-frame {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.upload-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-box {
+  display: flex;
+  margin-top: 10px;
+}
+
+.upload-name {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px 0 0 8px;
+  background-color: #fff;
+}
+
+.file-input-label {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+}
+#input-file {
+  display: none; /* Hides the input completely */
+}
+
+.signup-btn {
   margin-top: 25px;
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 26px;
-  color: #4f547b;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-/* Background animation */
-@-webkit-keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.signup-btn:hover {
+  background-color: rgb(57, 66, 229);
+  color: white;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+/* Description under image upload */
+.thumbnail-desc {
+  font-size: 14px;
+  color: #f4f2f2;
+  margin-top: 10px;
 }

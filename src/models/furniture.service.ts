@@ -14,18 +14,19 @@ constructor() {
 }
 
 // SSR
-public async getAllProducts():Promise<Furniture[]> {
+public async getAllFurnitures():Promise<Furniture[]> {
     
     const result = await this.furnitureModel.find().exec();
     if (!result) throw new Errors (HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
-    return result;
+    return result as unknown as Furniture[];
  }
 
 
 public async createNewProduct(input:FurnitureInput): Promise<Furniture>
  {
     try {
-      return await this.furnitureModel.create(input);
+      const result = await this.furnitureModel.create(input);
+      return result as unknown as Furniture;
     }catch (err) {
         console.error("error, model:createNewProduct:", err)
         throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
@@ -41,7 +42,7 @@ public async updateChosenProduct (
     const result = await this.furnitureModel.findOneAndUpdate({_id: id}, input, {new:true} )
     .exec();
     if (!result) throw new Errors (HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
-    return result;
+    return result as unknown as Furniture;
  }
 
 }

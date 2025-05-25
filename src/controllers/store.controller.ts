@@ -59,7 +59,7 @@ storeController.processSignUp = async (
 
         req.session.member = result;
         req.session.save(function(){
-            res.redirect("/admin/product/all");
+            res.redirect("/admin/furniture/all");
         });
     } catch (err) {
         console.log("Error processLogin", err);
@@ -82,7 +82,7 @@ storeController.processLogin = async (req: AdminRequest, res: Response) => {
         const result = await memberService.processLogin(input);
         req.session.member = result;
         req.session.save(function () {
-            res.redirect("/admin/product/all");
+            res.redirect("/admin/furniture/all");
         });
 
     } catch (err) {

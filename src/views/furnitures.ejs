@@ -1,0 +1,176 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/furnitures.css" />
+
+<body>
+  <img src="/img/furniture.jpg" alt="img jpg " class="bg-img">
+
+  <div class="furnitures-container">
+    <div class="navigation-menu">
+      <ul class="nav justify-content-center">
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link active" href="/admin/">Home</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link" href="/admin/furniture/all">Furniture</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer">
+          <a class="nav-link" href="/admin/user/all">Users</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
+          <a class="nav-link" href="/admin/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="restaurant-menu-frame">
+      <div class="board">
+        <div class="dishes-table">
+          <span class="new-dish-txt" style="margin-bottom: 30px">Furnitures LIST</span>
+          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+              <tr class="thead-light">
+                <th scope="col">T/r</th>
+                <th scope="col">Name</th>
+                <th scope="col">Collection</th>
+                <th scope="col">Size</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <% furnitures.map(function(value, key) { %>
+              <tbody style="background: white">
+                <td><%= key + 1 %></td>
+                <td><%= value.furnitureName %></td>
+                <td><%= value.furnitureCollection %></td>
+                <td><%= value.furnituresize %></td>
+                <td><%= value.furnitureVolume %></td>
+                <td><%= value.furniturePrice %></td>
+                <td><%= value.furnitureLeftCount %></td>
+                <td>
+                  <select class="spec-select new-furniture-status" id="<%= value._id %>">
+                    <option value="OUT_OF_STOCK" <%= value.furniturestatus === "OUT_OF_STOCK" ? "selected" : "" %>>Out of Stock</option>
+                    <option value="AVAILABLE" <%= value.furniturestatus === "AVAILABLE" ? "selected" : "" %>>Available</option>
+                    <option value="DELETE" <%= value.furniturestatus === "DELETE" ? "selected" : "" %>>Delete</option>
+                  </select>
+                </td>
+              </tbody>
+            <% }) %>
+          </table>
+
+          <div class="long-input" style="align-items: flex-end; margin-bottom: 25px">
+            <button class="btn btn-primary" id="process-btn">New Furniture</button>
+          </div>
+        </div>
+
+        <form
+          onsubmit="return validateForm()"
+          action="/admin/furniture/create"
+          method="POST"
+          class="dish-container"
+          enctype="multipart/form-data"
+        >
+          <div class="long-input" style="display: flex; align-items: center">
+            <span class="new-dish-txt">NEW FURNITURE DETAIL</span>
+          </div>
+
+          <div class="login-input-frame">
+            <div class="long-input">
+              <label>Furniture Name</label>
+              <input type="text" placeholder="Name" name="furnitureName" class="furniture-name" />
+            </div>
+            <input name="furniturestatus" value="OUT_OF_STOCK" class="furniture-status" hidden />
+          </div>
+
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Furniture Price</label>
+              <input type="number" placeholder="Price" name="furniturePrice" class="furniture-price" />
+            </div>
+            <div class="half-input">
+              <label>Furniture Stock Count</label>
+              <input type="number" placeholder="Counts" name="furnitureLeftCount" class="furniture-left-count" />
+            </div>
+          </div>
+
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Furniture Collection</label>
+              <select class="furniture-collection" name="furnitureCollection">
+                <option value="BEDROOM">Bedroom</option>
+                <option value="LIVING_ROOM">Living Room</option>
+                <option value="DINING_ROOM">Dining Room</option>
+                <option value="OFFICE">Office</option>
+                <option value="OUTDOOR">Outdoor</option>
+                <option value="STORAGE">Storage</option>
+                <option value="DECOR">Decor</option>
+              </select>
+            </div>
+            <div class="half-input">
+              <label>Furniture Size</label>
+              <select class="furniture-size" name="furnituresize">
+                <option value="SMALL">Small</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LARGE">Large</option>
+                <option value="SET">Set</option>
+              </select>
+            </div>
+            <div class="half-input">
+              <label>Furniture Capacity</label>
+              <select class="furniture-volume" name="furnitureVolume">
+                <option value="SINGLE">Single</option>
+                <option value="DOUBLE">Double</option>
+                <option value="TRIPLE">Triple</option>
+                <option value="FAMILY">Family</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="long-input">
+            <label>Furniture Description</label>
+            <textarea name="furnitureDesc" class="furniture-desc"></textarea>
+          </div>
+
+          <div class="img-frame">
+            <label>Furniture Images</label>
+            <div class="media-frame">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <div class="upload-img-box">
+                  <img 
+                    src="/img/upload.svg" 
+                    class="<%= i %>" 
+                    id="image-section-<%= i %>" 
+                    onclick="document.getElementById('file-<%= i %>').click()" 
+                    style="cursor: pointer;"
+                  />
+                  <input
+                    type="file"
+                    id="file-<%= i %>"
+                    name="furnitureImages"
+                    class="image-<%= i %>"
+                    style="display: none;" 
+                    <%= i === 1 ? 'required' : '' %>
+                    onchange="previewFileHandler(this, <%= i %>)"
+                  />
+                </div>
+                
+              <% } %>
+              <input name="restaurantIid" class="restaurant-id" hidden />
+            </div>
+          </div>
+
+          <div class="operation-buttons">
+            <button class="btn btn-danger" id="cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="create-btn">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+</div>
+  <script type="text/javascript" src="/js/furnitures.js"></script>
+</body>
+
+<%- include('includes/footer') %>

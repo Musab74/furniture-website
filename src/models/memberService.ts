@@ -1,4 +1,3 @@
-import memberModel from "../schema_models/member.model";
 import { LoginInput, Member, MemberInput, MemberUpdateInput } from "../libs/types/member";
 import Errors from "../libs/error";
 import { HttpCode } from "../libs/error";
@@ -6,6 +5,7 @@ import { Message } from "../libs/error";
 import { memberStatus, memberType } from "../libs/enums/member.enum";
 import * as bcrypt from "bcryptjs"
 import { shapeIntoMongooseObjectId } from "../libs/config";
+import memberModel from "../Schema_models/member.model";
 
 class MemberService {
     private readonly memberModel;
@@ -17,23 +17,21 @@ class MemberService {
     public async SignUp(input: MemberInput): Promise<Member> {
         const salt = await bcrypt.genSalt();
         input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
-
+    
         try {
             const result = await this.memberModel.create(input);
-
-            // const tempResult = new this.memberModel(input);
-            // const result = await tempResult.save();
-
-            result.memberPassword = "";
-            return result.toJSON();
-
+    
+            const createdMember = result.toObject() as Member;
+            createdMember.memberPassword = "";
+    
+            return createdMember;
+    
         } catch (err) {
-            console.error("Error, model:signup",err);
-            
+            console.error("Error, model:signup", err);
             throw new Errors(HttpCode.BAD_REQUEST, Message.USED_PHONE);
         }
-
     }
+    
 
     public async Login(input: LoginInput): Promise<Member> {
         // TODO: Consider member status later
@@ -61,8 +59,10 @@ class MemberService {
             throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
         }
 
-        return await this.memberModel.findById(member._id).lean().exec();
-
+        const result = await this.memberModel.findById(member._id).lean().exec();
+        if (!result) throw new Error("Member not found");
+        return result as unknown as Member;
+        
 
     }
 
@@ -89,7 +89,7 @@ class MemberService {
             // const result = await tempResult.save();
 
             result.memberPassword = "";
-            return result;
+            return result as unknown as Member;
 
         } catch (err) {
             throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
@@ -115,8 +115,12 @@ class MemberService {
             throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
         }
 
-        return await this.memberModel.findById(member._id).exec();
-
+        const fullMember = await this.memberModel.findById(member._id).exec();
+        if (!fullMember) {
+            throw new Errors(HttpCode.NOT_FOUND, Message.USER_NOT_FOUND);
+        }
+    
+        return fullMember as unknown as Member;
 
     }
 
@@ -125,7 +129,7 @@ class MemberService {
         .find({membetType:memberType.USER})
         .exec();
         if (!result) throw new Errors(HttpCode.BAD_REQUEST, Message.NO_DATA_FOUND);
-        return result;
+        return result as unknown as Member[];
     }
 
     public async updateChosenUser(input: MemberUpdateInput): Promise<Member>{
@@ -134,7 +138,7 @@ class MemberService {
         .findByIdAndUpdate({_id: input._id}, input, {new:true})
         .exec();
         if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
-        return result;
+        return result as unknown as Member;
     }
 }
 export default MemberService;

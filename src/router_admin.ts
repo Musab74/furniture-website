@@ -6,6 +6,9 @@ import furnitureController from "./controllers/furniture.controller";
 import makeUploader from "./libs/utils/uploader";
 
 /* Store*/
+const uploadFurnitureImages = makeUploader("furnitures").array("furnitureImages", 5);
+
+
 
 routerAdmin.get("/", storeController.goHome); 
 
@@ -27,15 +30,17 @@ routerAdmin.get("/logout", storeController.LogOut)
 /* Furniture*/
 routerAdmin.get("/furniture/all", 
     storeController.verifyRestaurant,
-    furnitureController.getAllProducts);
+    furnitureController.getAllFurnitures);
+    console.log("Upload imade:",uploadFurnitureImages)
+
 routerAdmin.post("/furniture/create",
     storeController.verifyRestaurant,
-    // uploadProductImage.single('productImage'), uploading only one picture
-    makeUploader("products").array("productImages", 5),
-    furnitureController.createNewProduct);
+    // uploadProductImage.single('productImage'), //uploading only one picture
+    uploadFurnitureImages,    furnitureController.createNewProduct);
 routerAdmin.post("/furniture/:id", 
     storeController.verifyRestaurant,
     furnitureController.updateChosenProduct);  
+    console.log("Upload imade:",uploadFurnitureImages)
 
 
 routerAdmin.get("/user/all",

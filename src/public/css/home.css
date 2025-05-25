@@ -1,67 +1,52 @@
+/* Base container taking full viewport */
 .home-container {
   position: relative;
-  width: auto;
-  height: auto;
-  min-height: 100%;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fullscreen background video */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Button wrapper centered in viewport */
+.login-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.75); /* black background with opacity */
+  padding: 40px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(-45deg, #110303f0, #dd6d04, #011c1afc, #7a6868);
+  gap: 20px;
 }
 
-.home-container a {
+/* White buttons with clean style */
+.login-button {
+  width: 250px; /* fixed width */
+  padding: 14px 0; /* vertical padding only */
+  font-size: 18px;
+  font-weight: bold;
+  background-color: white;
+  color: black;
   text-decoration: none;
-  color: #000000;
+  text-align: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.home-container .nav-item a {
-  color: #e3c08d;
-}
 
-.home-container .nav-item a.disabled {
-  color: #898071;
-}
-
-.home-container .navigation-menu {
-  position: relative;
-  z-index: 10000;
-  color: #efefee;
-  font-size: 40px;
-  font-family: monospace;
-}
-
-.home-container .animation-frame {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 55px;
-}
-
-.home-container .animation-wrapper {
-  position: relative;
-  width: 775px;
-  height: 775px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-container .sphere-animation {
-  position: relative;
-  width: 580px;
-  height: 580px;
-}
-
-.home-container .sphere path {
-  fill: url(#sphereGradient);
-  stroke-width: 1px;
-  stroke: rgba(80, 80, 80, 0.35);
-  backface-visibility: hidden;
-}
-
-@media (min-width: 500px) {
-  .sphere path {
-    stroke-width: 0.4px;
-  }
+.login-button:hover {
+  background-color: #dddddd;
 }
