@@ -14,7 +14,7 @@ export enum FurnitureCapacity {
 }
 
 
-// Product availability or lifecycle status
+// Furniture availability or lifecycle status
 export enum FurnitureStatus {
     OUT_OF_STOCK = "OUT_OF_STOCK",
     AVAILABLE = "AVAILABLE",

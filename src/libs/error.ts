@@ -25,6 +25,8 @@ export enum HttpCode{
       BLOCKED_USER = "You have been blocked. Please contact the admin.",
       WRONG_PASSWORD = "Incorrect password. Please try again.",
       NOT_AUTHENTICATED = "You are not authenticated. Please log in first.",
+      TOKEN_CREATION_FAILED = "TOKEN_CREATION_FAILED",
+      NO_MEMBER_NICK = "NO_MEMBER_NICK",
   }
   
     class Errors extends Error {

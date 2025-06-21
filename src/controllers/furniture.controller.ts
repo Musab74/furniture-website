@@ -3,11 +3,62 @@ import Errors, { HttpCode, Message } from "../libs/error";
 import { Request, Response } from "express";
 import FurnitureService from "../models/furniture.service";
 import { FurnitureInput } from "../libs/types/furniture";
-import { AdminRequest } from "../libs/types/member";
+import { AdminRequest, ExtendedRequest } from "../libs/types/member";
+import { FurnitureCollection } from "../libs/enums/furniture.enum";
+import { FurnitureInquiry } from "../libs/types/furnitures";
+import { Types } from "mongoose";
 
 const furnitureService = new FurnitureService();
 
 const furnitureController: T = {};
+//SPA
+furnitureController.getFurnitures = async (req:Request, res:Response) => {
+    try {
+        const {page, limit, order, furnitureCollection, search} = req.query;
+        const inquiry: FurnitureInquiry = {
+            order:String(order),
+            page:Number(page),
+            limit:Number(limit),
+        };
+        if (furnitureCollection)
+            inquiry.furnitureCollection = furnitureCollection as FurnitureCollection;
+        if(search)inquiry.search = String(search);
+        const result = await furnitureService.getFurnitures(inquiry);
+
+        res.status(HttpCode.OK).json(result)
+        
+    } catch (err) {
+        console.log("Error getFurnitures", err);
+        if (err instanceof Errors) res.status(err.code).json(err);
+        else res.status(Errors.standard.code).json(Errors.standard);
+    }
+}
+furnitureController.getFurniture = async (req: ExtendedRequest, res: Response) => {
+    try {
+        console.log("getFurniture arrived:");
+        const { id } = req.params;
+
+        let memberId: Types.ObjectId | null = null;        
+        const result = await furnitureService.getFurniture(memberId, id); 
+        console.log("id ketdi shetta:", id);
+        
+        res.status(HttpCode.OK).json(result);
+        
+    } catch (err) {
+        console.log("Error getFurniture", err);
+        if (err instanceof Errors) {
+            res.status(err.code).json(err);
+        } else {
+            console.log("shetga keldi xato");
+            
+            res.status(Errors.standard.code).json(Errors.standard);
+        }
+    }
+};
+
+
+
+// SSR
 
 furnitureController.getAllFurnitures = async (req: Request, res: Response) => {
     try {
@@ -17,15 +68,13 @@ furnitureController.getAllFurnitures = async (req: Request, res: Response) => {
       res.render("furnitures", {furnitures: data});
       
     } catch (err) {
-        console.log("Error getAllProducts", err);
+        console.log("Error getAllFurnitures", err);
         if (err instanceof Errors) res.status(err.code).json(err);
         else res.status(Errors.standard.code).json(Errors.standard);
     }
 };
-//SPA
 
 
-// SSR
 furnitureController.createNewProduct = async (req: AdminRequest, res: Response) => {
     try {
         console.log("Body:");

@@ -1,13 +1,11 @@
 import express from "express";
-const routerAdmin = express.Router();
 import storeController from "./controllers/store.controller";
 import furnitureController from "./controllers/furniture.controller"; 
-// import { uploadProductImage } from "./libs/utils/uploader";
 import makeUploader from "./libs/utils/uploader";
 
 /* Store*/
 const uploadFurnitureImages = makeUploader("furnitures").array("furnitureImages", 5);
-
+const routerAdmin = express.Router();
 
 
 routerAdmin.get("/", storeController.goHome); 
@@ -29,25 +27,25 @@ routerAdmin.get("/logout", storeController.LogOut)
 
 /* Furniture*/
 routerAdmin.get("/furniture/all", 
-    storeController.verifyRestaurant,
+    storeController.verifyStore,
     furnitureController.getAllFurnitures);
 
 routerAdmin.post("/furniture/create",
-    storeController.verifyRestaurant,
-    // uploadProductImage.single('productImage'), //uploading only one picture
-    uploadFurnitureImages,    furnitureController.createNewProduct);
+    storeController.verifyStore,
+    uploadFurnitureImages,   
+    furnitureController.createNewProduct);
 routerAdmin.post("/furniture/:id", 
-    storeController.verifyRestaurant,
-    furnitureController.updateChosenProduct);  
+    storeController.verifyStore,
+    furnitureController.updateChosenFurniture);  
 
 
 routerAdmin.get("/user/all",
-    storeController.verifyRestaurant,
+    storeController.verifyStore,
     storeController.getUsers
 )
 
 routerAdmin.post("/user/edit",
-    storeController.verifyRestaurant,
+    storeController.verifyStore,
     storeController.updateChosenUser
 )
 

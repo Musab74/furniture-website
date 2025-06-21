@@ -156,7 +156,7 @@ storeController.checkAuthSession = async (
   }
 };
 
-storeController.verifyRestaurant = (
+storeController.verifyStore = (
     req:AdminRequest,
     res:Response,
     next: NextFunction
