@@ -114,12 +114,12 @@ furnitureController.createNewProduct = async (req: AdminRequest, res: Response) 
         )}
 };
 
-furnitureController.updateChosenProduct = async (req: Request, res: Response) => {
+furnitureController.updateChosenFurniture = async (req: Request, res: Response) => {
     try {
         console.log("Body:", req.body);
         const id = req.params.id;
 
-        const result = await furnitureService.updateChosenProduct(id, req.body);
+        const result = await furnitureService.updateChosenFurniture(id, req.body);
 
         res.status(HttpCode.OK).json({data: result});
         
