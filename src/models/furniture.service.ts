@@ -86,6 +86,33 @@ public async getFurniture(memberId: ObjectId | null, id: string): Promise<Furnit
     return result as unknown as Furniture;
 }
 
+public async getRandomFurnitures(): Promise<Furniture[]> {
+    const result = await this.furnitureModel.aggregate([
+        { $match: { FurnitureStatus: FurnitureStatus.AVAILABLE } },
+        { $sample: { size: 2 } } 
+    ]).exec();
+
+    if (!result || result.length === 0)
+        throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    return result;
+}
+
+
+public async getComingSoonFurniture(limit: number = 4): Promise<Furniture[]> {
+    try {
+        return await this.furnitureModel.find({ furnitureStatus: FurnitureStatus.OUT_OF_STOCK })
+            .sort({ updatedAt: -1 }) 
+            .limit(limit)
+            .lean(); 
+    } catch (err) {
+        console.error("Error fetching coming soon furniture:", err);
+        throw new Error("Failed to fetch coming soon furniture");
+    }
+}
+
+
+
 // SSR project 
 
 public async getAllFurnitures():Promise<Furniture[]> {

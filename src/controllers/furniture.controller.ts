@@ -54,6 +54,18 @@ furnitureController.getFurniture = async (req: ExtendedRequest, res: Response) =
             res.status(Errors.standard.code).json(Errors.standard);
         }
     }
+
+furnitureController.getRandomFurnitures = async (req: Request, res: Response) => {
+        try {
+            const result = await furnitureService.getRandomFurnitures();
+            res.status(HttpCode.OK).json(result);
+        } catch (err) {
+            console.log("Error getRandomFurnitures", err);
+            if (err instanceof Errors) res.status(err.code).json(err);
+            else res.status(Errors.standard.code).json(Errors.standard);
+        }
+    };
+    
 };
 
 
@@ -117,5 +129,16 @@ furnitureController.updateChosenProduct = async (req: Request, res: Response) =>
         else res.status(Errors.standard.code).json(Errors.standard);
     }
 };
+
+furnitureController.getComingSoonFurnitures = async (req: Request, res: Response) => {
+    try {
+        const furnitures = await furnitureService.getComingSoonFurniture(4);
+        res.status(HttpCode.OK).json(furnitures);
+    } catch (err) {
+        console.error("Error in getComingSoonFurnitures:", err);
+        res.status(HttpCode.INTERNAL_SERVER_ERROR).json(new Errors(HttpCode.INTERNAL_SERVER_ERROR, Message.UPDATE_FAILED));
+    }
+}
+
 
 export default furnitureController;

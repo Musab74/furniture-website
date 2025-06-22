@@ -27,6 +27,7 @@ export enum HttpCode{
       NOT_AUTHENTICATED = "You are not authenticated. Please log in first.",
       TOKEN_CREATION_FAILED = "TOKEN_CREATION_FAILED",
       NO_MEMBER_NICK = "NO_MEMBER_NICK",
+      FAILED = "FAILED",
   }
   
     class Errors extends Error {
