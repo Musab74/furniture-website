@@ -10,7 +10,6 @@ router.post("/member/login", memberController.Login);
 router.post("/member/signUp", memberController.SignUp);
 router.post("/member/logout", memberController.verifyAuth, memberController.logout);
 router.get("/member/detail", memberController.verifyAuth, memberController.getMemberDetails);
-router.get("/member/top-users", memberController.getTopUsers);
 
 // Update member
 router.post("/member/update", 
@@ -19,7 +18,10 @@ router.post("/member/update",
     memberController.updateMember);
 
 // /Furnitures
+
 router.get("/furniture/all", furnitureController.getFurnitures);
+router.get("/furniture/coming", furnitureController.getComingSoonFurnitures);
+router.get("/furniture/random", furnitureController.getRandomFurnitures);
 router.get("/furniture/:id", memberController.retrieveAuth, furnitureController.getFurniture )
 
 // Orders

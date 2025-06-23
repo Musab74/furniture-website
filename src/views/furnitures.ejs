@@ -51,10 +51,11 @@
                 <td><%= value.furnitureLeftCount %></td>
                 <td>
                   <select class="spec-select new-furniture-status" id="<%= value._id %>">
-                    <option value="OUT_OF_STOCK" <%= value.furniturestatus === "OUT_OF_STOCK" ? "selected" : "" %>>Out of Stock</option>
-                    <option value="AVAILABLE" <%= value.furniturestatus === "AVAILABLE" ? "selected" : "" %>>Available</option>
-                    <option value="DELETE" <%= value.furniturestatus === "DELETE" ? "selected" : "" %>>Delete</option>
+                    <option value="OUT_OF_STOCK" <%= value.furnitureStatus === "OUT_OF_STOCK" ? "selected" : "" %>>Out of Stock</option>
+                    <option value="AVAILABLE" <%= value.furnitureStatus === "AVAILABLE" ? "selected" : "" %>>Available</option>
+                    <option value="DELETE" <%= value.furnitureStatus === "DELETE" ? "selected" : "" %>>Delete</option>
                   </select>
+                  
                 </td>
               </tbody>
             <% }) %>

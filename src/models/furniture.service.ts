@@ -24,28 +24,42 @@ class FurnitureService {
     // SPA project
     public async getFurnitures(inquiry: FurnitureInquiry): Promise<Furniture[]> {
         console.log("inquiry:", inquiry);
-        const match: T = { FurnitureStatus: FurnitureStatus.AVAILABLE };
+      
+        const match: any = { furnitureStatus: FurnitureStatus.AVAILABLE }; 
+      
         if (inquiry.furnitureCollection)
-            match.furnitureCollection = inquiry.furnitureCollection;
+          match.furnitureCollection = inquiry.furnitureCollection;
+      
         if (inquiry.search) {
-            match.furnitureName = {
-                $regex: new RegExp(inquiry.search, "i")
-            };
+          match.furnitureName = {
+            $regex: new RegExp(inquiry.search, "i"),
+          };
         }
-        const sort: T =
-            inquiry.order === "furniturePrice"
-                ? { [inquiry.order]: 1 }
-                : { [inquiry.order]: -1 };
-        const result = await this.furnitureModel.aggregate([
+      
+        const sort: any =
+          inquiry.order === "furniturePrice"
+            ? { [inquiry.order]: 1 }
+            : { [inquiry.order]: -1 };
+      
+        console.log("match:", match);
+        console.log("sort:", sort);
+      
+        const result = await this.furnitureModel
+          .aggregate([
             { $match: match },
             { $sort: sort },
-            { $skip: (inquiry.page * 1 - 1) * inquiry.limit },
-            { $limit: inquiry.limit * 1 },
-        ]).exec();
-        if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+            { $skip: (inquiry.page - 1) * inquiry.limit },
+            { $limit: inquiry.limit },
+          ])
+          .exec();
+      
+        if (!result) {
+          throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+        }
+      
         return result;
-    }
-
+      }
+      
     public async getFurniture(memberId: ObjectId | null, id: string): Promise<Furniture> {
 
         const furnituretId = shapeIntoMongooseObjectId(id);
@@ -88,18 +102,20 @@ class FurnitureService {
 
     public async getRandomFurnitures(): Promise<Furniture[]> {
         const result = await this.furnitureModel.aggregate([
-            { $match: { FurnitureStatus: FurnitureStatus.AVAILABLE } },
+            { $match: { furnitureStatus: FurnitureStatus.AVAILABLE } },
             { $sample: { size: 2 } }
         ]).exec();
-
+        console.log("RandomResult:", result);
+    
         if (!result || result.length === 0)
             throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
-
+    
         return result;
     }
+    
 
 
-    public async getComingSoonFurniture(limit: number = 4): Promise<Furniture[]> {
+    public async getComingSoonFurnitures(limit: number = 4): Promise<Furniture[]> {
         try {
             return await this.furnitureModel.find({ furnitureStatus: FurnitureStatus.OUT_OF_STOCK })
                 .sort({ updatedAt: -1 })
