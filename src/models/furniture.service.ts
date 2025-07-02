@@ -4,7 +4,6 @@ import Errors, { Message } from "../libs/error";
 import { HttpCode } from "../libs/error";
 import { Furniture } from "../libs/types/furniture";
 import { shapeIntoMongooseObjectId } from "../libs/config";
-import { T } from "../libs/types/common";
 import { FurnitureInquiry } from "../libs/types/furnitures";
 import { FurnitureStatus } from "../libs/enums/furniture.enum";
 import { ObjectId } from "mongoose";
@@ -14,11 +13,11 @@ import ViewService from "./view.service";
 
 class FurnitureService {
     private readonly furnitureModel;
-    public ViewService: any;
+    public viewService: any;
 
     constructor() {
         this.furnitureModel = FurnitureModel,
-            this.ViewService = new ViewService;
+        this.viewService = new ViewService();
     }
 
     // SPA project
@@ -37,12 +36,10 @@ class FurnitureService {
         }
       
         const sort: any =
-          inquiry.order === "furniturePrice"
+          inquiry.order === "furnitureViews"
             ? { [inquiry.order]: 1 }
             : { [inquiry.order]: -1 };
       
-        console.log("match:", match);
-        console.log("sort:", sort);
       
         const result = await this.furnitureModel
           .aggregate([
@@ -62,10 +59,9 @@ class FurnitureService {
       
     public async getFurniture(memberId: ObjectId | null, id: string): Promise<Furniture> {
 
-        const furnituretId = shapeIntoMongooseObjectId(id);
+        const furnitureId = shapeIntoMongooseObjectId(id);
 
-
-        let result = await this.furnitureModel.findOne({ _id: furnituretId, furnitureStatus: FurnitureStatus.AVAILABLE })
+        let result = await this.furnitureModel.findOne({ _id: furnitureId, furnitureStatus: FurnitureStatus.AVAILABLE })
             .exec();
         console.log("id ketdi", id);
 
@@ -76,18 +72,19 @@ class FurnitureService {
             // view log existence
             const input: ViewInput = {
                 memberId: memberId,
-                viewRefId: furnituretId,
+                viewRefId: furnitureId,
                 viewGroup: ViewGroup.FURNITURE
             }
-            const existView = await this.ViewService.checkViewExistence(input);
+            const existView = await this.viewService.checkViewExistence(input);
 
             // insert new view 
             if (!existView) {
-                console.log("planning to insert new view:");
-                await this.ViewService.insertMemberView(input);
+                console.log("Inserting furniture view now...");
+                await this.viewService.insertMemberView(input);
+                console.log("Inserted!");
 
                 result = await this.furnitureModel.findByIdAndUpdate(
-                    furnituretId,
+                    furnitureId,
                     { $inc: { furnitureViews: +1 } },
                     { new: true }
                 ).exec();
@@ -117,15 +114,18 @@ class FurnitureService {
 
     public async getComingSoonFurnitures(limit: number = 4): Promise<Furniture[]> {
         try {
-            return await this.furnitureModel.find({ furnitureStatus: FurnitureStatus.OUT_OF_STOCK })
-                .sort({ updatedAt: -1 })
-                .limit(limit)
-                .lean();
+          return await this.furnitureModel
+            .aggregate([
+              { $match: { furnitureStatus: FurnitureStatus.OUT_OF_STOCK } },
+              { $sample: { size: limit } }
+            ])
+            .exec();
         } catch (err) {
-            console.error("Error fetching coming soon furniture:", err);
-            throw new Error("Failed to fetch coming soon furniture");
+          console.error("Error fetching coming soon furniture:", err);
+          throw new Error("Failed to fetch coming soon furniture");
         }
-    }
+      }
+      
 
 
 

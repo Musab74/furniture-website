@@ -20,7 +20,7 @@ export enum HttpCode{
       ITEM_NOT_FOUND = "Furniture item not found.",
       OUT_OF_STOCK = "This item is currently out of stock.",
       
-      USED_PHONE = "This phone number is already registered.",
+      USED_PHONE = "This phone number or nickname are already registered.",
       USER_NOT_FOUND = "User not found.",
       BLOCKED_USER = "You have been blocked. Please contact the admin.",
       WRONG_PASSWORD = "Incorrect password. Please try again.",

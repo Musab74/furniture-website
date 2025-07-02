@@ -13,7 +13,8 @@ const orderItemSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Order"
     },
-    furnituretId: {
+
+    furnitureId: {
     type:Schema.Types.ObjectId,
     ref: "Furniture",
     },

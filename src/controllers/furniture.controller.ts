@@ -2,7 +2,7 @@ import { T } from "../libs/types/common";
 import Errors, { HttpCode, Message } from "../libs/error";
 import { Request, Response } from "express";
 import FurnitureService from "../models/furniture.service";
-import { FurnitureInput } from "../libs/types/furniture";
+import { Furniture, FurnitureInput } from "../libs/types/furniture";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import { FurnitureCollection } from "../libs/enums/furniture.enum";
 import { FurnitureInquiry } from "../libs/types/furnitures";
@@ -28,32 +28,23 @@ furnitureController.getFurnitures = async (req:Request, res:Response) => {
         res.status(HttpCode.OK).json(result)
         
     } catch (err) {
-        console.log("Error getFurnitures", err);
         if (err instanceof Errors) res.status(err.code).json(err);
         else res.status(Errors.standard.code).json(Errors.standard);
     }
 }
-furnitureController.getFurniture = async (req: ExtendedRequest, res: Response) => {
+furnitureController.getFurniture = async (req: { params: { id: any; }; member: { _id: null; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: Furniture): void; new(): any; }; }; }) => {
     try {
-        console.log("getFurniture arrived:");
-        const { id } = req.params;
-
-        let memberId: Types.ObjectId | null = null;        
-        const result = await furnitureService.getFurniture(memberId, id); 
-        console.log("id ketdi shetta:", id);
-        
-        res.status(HttpCode.OK).json(result);
-        
+      const { id } = req.params;
+      const memberId = req.member?._id || null;  // <-- important
+  
+      const result = await furnitureService.getFurniture(memberId, id);
+      res.status(200).json(result);
     } catch (err) {
-        console.log("Error getFurniture", err);
-        if (err instanceof Errors) {
-            res.status(err.code).json(err);
-        } else {
-            console.log("shetga keldi xato");
-            
-            res.status(Errors.standard.code).json(Errors.standard);
-        }
-    } }
+      res.status(500).json
+      ;
+    }
+  };
+  
 
 furnitureController.getRandomFurnitures = async (req: Request, res: Response) => {
         try {

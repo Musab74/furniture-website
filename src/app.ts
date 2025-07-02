@@ -37,7 +37,7 @@ app.use(cookieParser())
     session({
         secret:String(process.env.SESSION_SECRET),
         cookie:{
-            maxAge:1000*3600*6, // 6h
+            maxAge:1000*3600*60, // 60h
         },
         store: store,
         resave:true,

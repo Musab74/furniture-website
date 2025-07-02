@@ -83,7 +83,7 @@ class OrderService{
         {
             $lookup: {
                 from: "furnitures",
-                localField: "orderItems.furnituretId",
+                localField: "orderItems.furnitureId",
                 foreignField: "_id",
                 as: "furnitureDate"
             },

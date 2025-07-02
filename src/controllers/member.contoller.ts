@@ -15,13 +15,11 @@ const memberController: T = {};
 
 memberController.getStore = async (req:Request, res:Response) => {
     try {
-        console.log("getStore");
         const result = await memberService.getStore();
         
         res.status(HttpCode.OK).json(result);
 
     } catch (err) {
-        console.log("get Store", err);
         if (err instanceof Errors) res.status(err.code).json(err);
         else res.status(Errors.standard.code).json(Errors.standard);
     }
@@ -35,7 +33,7 @@ memberController.SignUp = async (req: Request, res: Response) => {
 
 
         result: Member = await memberService.SignUp(input);
-        const token = await authService.createToken(result);
+        const token = authService.createToken(result);
 
         res.cookie("accessToken", token, {
             maxAge: AUTH_TIMER * 3600 * 1000,
@@ -116,20 +114,6 @@ memberController.getMemberDetails = async (
 }
 };
 
-memberController.getTopUsers = async  (req:Request, res: Response) => {
-    try {
-        console.log("getTopUsers");
-        const result = await memberService.getTopUsers();
-        res.status(HttpCode.OK).json(result);
-
-        
-    } catch (err) {
-        console.log("Error, getTopUsers:", err);
-        
-        if (err instanceof Errors) res.status(err.code).json(err);
-        else res.status(Errors.standard.code).json(Errors.standard);  
-    }
-}
 
 memberController.updateMember = async (req:ExtendedRequest, res:Response) => {
     try {
@@ -164,22 +148,22 @@ memberController.verifyAuth = async (
     }
 }
 
-memberController.retrieveAuth = async (
-    req: AdminRequest, 
-    res: Response, 
-    next: NextFunction) => {  //async method
+memberController.retrieveAuth = async (req: { cookies: { [x: string]: any; }; member: Member; }, res: any, next: () => void) => {
     try {
-       
-        const token = req.cookies["accessToken"];
-        if (token) req.member = await authService.checkAuth(token); //payloadni token orqali qabul qilib olyapti
-
-        next();
+      const token = req.cookies["accessToken"];
+      console.log("Token in cookie:", token);
+      if (token) {
+        req.member = await authService.checkAuth(token);
+        console.log("Authenticated member:", req.member);
+      }
+      next();
     } catch (err) {
-        console.log("error, retrieveAuth", err);
-        next();
-        
+      console.log("Error in retrieveAuth:", err);
+      next();
     }
-}
+  };
+  
+  
 
 
 
