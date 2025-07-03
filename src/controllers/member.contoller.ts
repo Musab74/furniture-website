@@ -33,7 +33,7 @@ memberController.SignUp = async (req: Request, res: Response) => {
 
 
         result: Member = await memberService.SignUp(input);
-        const token = authService.createToken(result);
+        const token = await authService.createToken(result);
 
         res.cookie("accessToken", token, {
             maxAge: AUTH_TIMER * 3600 * 1000,
@@ -87,7 +87,7 @@ memberController.logout = (
     res: Response
 ) => { try {
      console.log("Logout:");
-     res.cookie("accessToken", null, {maxAge: 0, httpOnly: true})
+     res.cookie("accessToken", null, {maxAge: 0, httpOnly: false})
      res.status(HttpCode.OK).json({ message: "Logged out" });
 
      
