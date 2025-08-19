@@ -82,4 +82,4 @@ io.on("connection", (socket) => {
 });
 
 
-export default app;   //moduleni export qilish  
+export { app, server, io };
