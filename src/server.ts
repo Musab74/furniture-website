@@ -1,13 +1,10 @@
-
 // import moment from 'moment'; // const moment = require
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({
+    path: process.env.NODE_ENV === 'production' ?  '.env.production' : '.env' 
+});
 import server from "./app"
-
-import app from "./app"
-
 //cluster => Database => collection => Document
-
 import mongoose from 'mongoose';
 
 
