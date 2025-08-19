@@ -2,6 +2,7 @@
 // import moment from 'moment'; // const moment = require
 import dotenv from 'dotenv';
 dotenv.config();
+import server from "./app"
 
 import app from "./app"
 
@@ -15,7 +16,7 @@ mongoose.connect(process.env.MONGO_URL as string, {}).
 then((date) => {
     console.log("Connection successfully MongoDB ");
     const PORT = process.env.PORT ?? 3009;
-    app.listen(PORT, function() { 
+    server.listen(PORT, function() { 
         console.info(`The server is running successfully in ${PORT}`);
         console.info (`This website running in http://localhost:${PORT}/admin \n `);
 

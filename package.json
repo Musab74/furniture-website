@@ -7,7 +7,8 @@
     "start": "ts-node src/server.ts",
     "start:dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"  },
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Musab74/furniture-website.git"
@@ -15,6 +16,7 @@
   "author": "Musab",
   "license": "MIT",
   "dependencies": {
+    "@types/socket.io": "^2.1.13",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^3.1.1",
     "cookie-parser": "^1.4.6",
@@ -29,6 +31,7 @@
     "mongoose": "^6.2.9",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.7.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -48,5 +51,3 @@
     "typescript": "^5.2.2"
   }
 }
-
-

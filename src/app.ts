@@ -5,10 +5,12 @@ import router from './router';
 import morgan from "morgan"
 import { MORGAN_FORMAT } from './libs/config';
 import session from 'express-session';
+import {Server as SocketIOServer} from "socket.io"
 import ConnectMongoDB from "connect-mongodb-session";
 import { T } from './libs/types/common';
 import cookieParser from 'cookie-parser';
 import cors from "cors"
+import http from 'http';
 
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
@@ -61,6 +63,23 @@ app.set("view engine", "ejs");
  // ADMIN ka loyihasini qurish sifatida:::: SSR :EJS
 app.use("/admin", RouterAdmin); //SSR :EJS
 app.use("/", router);//MiddleWare DP :::: SPA: react loyihasiga restAPI sifatida
+
+const server = http.createServer(app); // express serverini yaratamiz
+const io = new SocketIOServer(server, {
+    cors: {
+        origin: "*",
+        credentials: true,
+    },
+});
+
+let summaryClient = 0 
+
+io.on("connection", (socket) => {
+    console.log(`Connention & Total clients: ${++summaryClient}`);
+    socket.on("disconnect", () => {
+        console.log(`Disconnect & Total clients: ${--summaryClient}`);
+    });
+});
 
 
 export default app;   //moduleni export qilish  

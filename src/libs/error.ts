@@ -13,6 +13,7 @@ export enum HttpCode{
     export enum Message {
       SOMETHING_WENT_WRONG = "Something went wrong!",
       NO_DATA_FOUND = "No data found.",
+      CREATE_DENIED = "Only one restaurant account allowed to SignUp",
       CREATE_FAILED = "Failed to create the item.",
       UPDATE_FAILED = "Failed to update the item.",
       
